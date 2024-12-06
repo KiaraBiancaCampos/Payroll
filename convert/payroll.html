@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campos Payroll</title>
+</head>
+<body>
+    <h1>Payroll System</h1>
+
+    <label for="employeeName">Employee Name:</label>
+    <input type="text" id="employeeName">
+    <label for="daysWorked">Days Worked:</label>
+    <input type="number" id="daysWorked">
+    <label for="dailyRate">Daily Rate:</label>
+    <input type="number" id="dailyRate">
+    <label for="deductionAmount">Deduction Amount:</label>
+    <input type="number" id="deductionAmount">
+    <button onclick="addEmployee()">Add Employee</button>
+
+    <table id="payrollTable">
+        <tr>
+            <th>No.</th>
+            <th>Employee Name</th>
+            <th>Days Worked</th>
+            <th>Daily Rate</th>
+            <th>Gross Pay</th>
+            <th>Deduction Amount</th>
+            <th>Net Pay</th>
+        </tr>
+    </table>
+
+    <label for="deleteLine">Enter Line Number to Delete:</label>
+    <input type="number" id="deleteLine">
+    <button onclick="deleteEmployee()">Delete Employee</button>
+
+    <script>
+        let payrollList = [];
+
+        function addEmployee() {
+            const employeeName = document.getElementById('employeeName').value;
+            const daysWorked = parseInt(document.getElementById('daysWorked').value);
+            const dailyRate = parseInt(document.getElementById('dailyRate').value);
+            const deductionAmount = parseInt(document.getElementById('deductionAmount').value);
+
+            const grossPay = daysWorked * dailyRate;
+            const netPay = grossPay - deductionAmount;
+
+            const payrollEntry = {
+                employeeName: employeeName,
+                daysWorked: daysWorked,
+                dailyRate: dailyRate,
+                grossPay: grossPay,
+                deductionAmount: deductionAmount,
+                netPay: netPay
+            };
+
+            payrollList.push(payrollEntry);
+            displayPayroll();
+        }
+
+        function deleteEmployee() {
+            const deleteLine = parseInt(document.getElementById('deleteLine').value);
+            payrollList.splice(deleteLine - 1, 1);
+            displayPayroll();
+        }
+
+        function displayPayroll() {
+            const table = document.getElementById('payrollTable');
+            table.innerHTML = `
+                <tr>
+                    <th>No.</th>
+                    <th>Employee Name</th>
+                    <th>Days Worked</th>
+                    <th>Daily Rate</th>
+                    <th>Gross Pay</th>
+                    <th>Deduction Amount</th>
+                    <th>Net Pay</th>
+                </tr>
+            `;
+
+            payrollList.forEach((entry, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry.employeeName}</td>
+                    <td>${entry.daysWorked}</td>
+                    <td>${entry.dailyRate}</td>
+                    <td>${entry.grossPay}</td>
+                    <td>${entry.deductionAmount}</td>
+                    <td>${entry.netPay}</td>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
